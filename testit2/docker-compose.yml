@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  testit2:
+    image: ${DOCKER_REGISTRY-}testit2
+    build:
+      context: .
+      dockerfile: testit2/Dockerfile

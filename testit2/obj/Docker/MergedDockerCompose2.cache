@@ -1,0 +1,37 @@
+services:
+  testit2:
+    build:
+      context: C:\Working Directory\testdocker\testit2
+      dockerfile: testit2/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: testit2
+      target: base
+    container_name: testit2
+    entrypoint: tail -f /dev/null
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: testit2:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  "bin/Debug/netcoreapp2.1/testit2.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    ports:
+    - target: 80
+    - target: 443
+    tty: true
+    volumes:
+    - C:\Working Directory\testdocker\testit2\testit2:/app:rw
+    - C:\Users\docto\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\docto\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\docto\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Microsoft\Xamarin\NuGet:/root/.nuget/fallbackpackages:ro
+    - C:\Users\docto\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Working Directory\testdocker\testit2:/src:rw
+version: '3.4'
